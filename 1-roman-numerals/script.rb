@@ -23,9 +23,15 @@ class RomanNumerals
 
   def self.from_roman(string)
     sum = 0
-    string.each_char do |char|
-      next unless VALUES[char]
-      sum += VALUES[char]
+    chars = string.chars
+    while chars.any?
+      if chars[1] and VALUES[chars[0]] < VALUES[chars[1]]
+        sum += VALUES[chars[1]] - VALUES[chars[0]]
+        chars.shift(2)
+      else
+        sum += VALUES[chars[0]]
+        chars.shift
+      end
     end
     sum
   end
@@ -47,6 +53,15 @@ if ARGV.include?("--test")
     def test_decreasing_unit_size
       assert_equal "VI".to_i_from_roman, 6
       assert_equal "XVI".to_i_from_roman, 16
+    end
+
+    def test_increasing_unit_size
+      assert_equal "IV".to_i_from_roman, 4
+      assert_equal "IX".to_i_from_roman, 9
+      assert_equal "XIV".to_i_from_roman, 14
+      assert_equal "CM".to_i_from_roman, 900
+      assert_equal "MXL".to_i_from_roman, 1040
+      assert_equal "CCXCI".to_i_from_roman, 291
     end
   end
 end
