@@ -1,6 +1,7 @@
 class Integer
-  def to_roman_numeral
-    "I" * self
+  def to_roman
+    
+    RomanNumerals.to_roman(self)
   end
 end
 
@@ -12,14 +13,27 @@ end
 
 class RomanNumerals
   VALUES = {
-    "I" => 1,
-    "V" => 5,
-    "X" => 10,
-    "L" => 50,
-    "C" => 100,
-    "D" => 500,
     "M" => 1000,
+    "D" => 500,
+    "C" => 100,
+    "L" => 50,
+    "X" => 10,
+    "V" => 5,
+    "I" => 1,
   }
+
+  def self.to_roman(i)
+    result = ""
+    while i > 0
+      VALUES.each do |char, value|
+        if value <= i
+          i -= value
+          result << char
+        end
+      end
+    end
+    result
+  end
 
   def self.from_roman(string)
     sum = 0
@@ -40,6 +54,18 @@ end
 if ARGV.include?("--test")
   ARGV.delete("--test")
   require 'test/unit'
+
+  class ToRomanTestCase < Test::Unit::TestCase
+    def test_ones
+      assert_equal 1.to_roman, "I"
+      assert_equal 3.to_roman, "III"
+    end
+
+    def test_decreasing_values
+      assert_equal 6.to_roman, "VI"
+      assert_equal 16.to_roman, "XVI"
+    end
+  end
 
   class FromRomanTestCase < Test::Unit::TestCase
     def test_one
