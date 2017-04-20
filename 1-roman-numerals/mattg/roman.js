@@ -28,7 +28,7 @@ var convert = function(input) {
         throw new Error(errors.can_not.convert_type)
     }
 
-    console.log(output);
+    return output
 }
 
 
@@ -228,3 +228,5 @@ var errors = {
         utilise_case: ' No boundary can be found for given value'
     }
 }
+
+convertRoman = convert
